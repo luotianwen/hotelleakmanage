@@ -40,7 +40,11 @@
 		FROM h_hotel_staff a
 		<include refid="hotelStaffJoins"/>
 		<where>
+
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="h != null and h.id != null and h.id != ''">
+				AND a.h_id = #{h.id}
+			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>

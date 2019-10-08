@@ -7,6 +7,8 @@ import com.ha.facecamera.configserver.events.CameraConnectedEventHandler;
 import com.ha.facecamera.configserver.events.CaptureCompareDataReceivedEventHandler;
 import com.ha.facecamera.configserver.pojo.CaptureCompareData;
 import com.ha.facecamera.configserver.pojo.Face;
+import com.ha.facecamera.configserver.pojo.FacePage;
+import com.ha.facecamera.configserver.pojo.ListFaceCriteria;
 import com.thinkgem.jeesite.common.config.Global;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,14 +71,22 @@ public class FaceUtils {
          }
      });
  }
-     public boolean addFace( Face f,String deviceId){
+     public static boolean addFace( Face f,String deviceId){
          return (configServer.addFace(deviceId, f, 5000));
      }
-     public boolean modifyFace( Face f,String deviceId){
+     public static boolean modifyFace( Face f,String deviceId){
          return (configServer.modifyFace(deviceId, f, 5000));
      }
-    public boolean modifyFace(String id,String deviceId){
+    public static boolean deleteFace(String id,String deviceId){
+
         return (configServer.deleteFace(deviceId, id, 5000));
+    }
+    public static boolean listFace(String id,String deviceId){
+        ListFaceCriteria criteria=new ListFaceCriteria();
+        criteria.getRestrictions().idEq(id);
+        //criteria.set
+        FacePage fp =  configServer.listFace(deviceId,criteria,15000);
+        return fp.getTotal()>0?true:false;
     }
 
 }

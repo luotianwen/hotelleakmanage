@@ -3,14 +3,13 @@
  */
 package com.thinkgem.jeesite.common.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.persistence.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Service基类
@@ -70,7 +69,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 * @param entity
 	 */
 	@Transactional(readOnly = false)
-	public void save(T entity) {
+	public void save(T entity) throws Exception {
 		if (entity.getIsNewRecord()){
 			entity.preInsert();
 			dao.insert(entity);
