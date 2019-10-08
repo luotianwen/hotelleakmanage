@@ -47,14 +47,18 @@ public class HotelStaffService extends CrudService<HotelStaffDao, HotelStaff> {
 	@Autowired
 	private SystemService systemService;
 	@Transactional(readOnly = false)
-	public void save(HotelStaff hotelStaff) throws Exception {
+	public void save(HotelStaff hotelStaff)   {
 		if("1".equals(hotelStaff.getState())&& StringUtils.isEmpty(hotelStaff.getUser().getId())){
 			saveUser(hotelStaff);
 
 		}
 		super.save(hotelStaff);
 
+		try {
 			saveToFace(hotelStaff);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

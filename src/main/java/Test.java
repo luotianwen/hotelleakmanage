@@ -3,6 +3,7 @@ import com.ha.facecamera.configserver.events.CaptureCompareDataReceivedEventHand
 import com.ha.facecamera.configserver.pojo.CaptureCompareData;
 import com.ha.facecamera.configserver.pojo.Face;
 import com.ha.facecamera.configserver.pojo.Time;
+import sun.misc.BASE64Encoder;
 
 public class Test {
     private static final char last2byte = (char) Integer.parseInt("00000011", 2);
@@ -53,7 +54,7 @@ public class Test {
                 }
 
             }
-        });
+        });  BASE64Encoder encoder = new BASE64Encoder();
         ds.onCaptureCompareDataReceived(new CaptureCompareDataReceivedEventHandler() {
             @Override
             public void onCaptureCompareDataReceived(CaptureCompareData data) {
@@ -66,7 +67,7 @@ public class Test {
 
                         System.out.println("设备" + data.getCameraID() + "识别出人脸,员工号为：" + data.getPersonID());
                         //将人脸图byte[]字符转化为BASE64
-
+                        encoder.encode(data.getFeatureImageData());
 
                     } catch (Exception ex) {
                         System.out.println("处理抓拍到的人脸数据时发生异常：" + ex);
