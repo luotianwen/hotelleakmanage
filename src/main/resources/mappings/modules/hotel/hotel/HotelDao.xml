@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hotel.dao.hotel.HotelDao">
+    
+	<sql id="hotelColumns">
+		a.name AS "name",
+		a.lat AS "lat",
+		a.lng AS "lng",
+		a.province AS "province.id",
+		a.city AS "city.id",
+		a.area AS "area.id",
+		a.address AS "address",
+		a.account AS "account",
+		a.pass AS "pass",
+		a.leader AS "leader",
+		a.phone AS "phone",
+		a.contract AS "contract",
+		a.money AS "money",
+		a.start_date AS "startDate",
+		a.state AS "state",
+		a.e_contract AS "eContract",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.out_time AS "outTime",
+		a.remind AS "remind",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.id AS "id",
+		a.userid AS "user.id",
+		a4.name AS "province.name",
+		a5.name AS "city.name",
+		a6.name AS "area.name",
+		u26.name AS "user.name"
+	</sql>
+	
+	<sql id="hotelJoins">
+		LEFT JOIN sys_area a4 ON a4.id = a.province
+		LEFT JOIN sys_area a5 ON a5.id = a.city
+		LEFT JOIN sys_area a6 ON a6.id = a.area
+		LEFT JOIN sys_user u26 ON u26.id = a.userid
+	</sql>
+    
+	<select id="get" resultType="Hotel">
+		SELECT 
+			<include refid="hotelColumns"/>
+		FROM h_hotel a
+		<include refid="hotelJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Hotel">
+		SELECT 
+			<include refid="hotelColumns"/>
+		FROM h_hotel a
+		<include refid="hotelJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="account != null and account != ''">
+				AND a.account = #{account}
+			</if>
+			<if test="leader != null and leader != ''">
+				AND a.leader = #{leader}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			<if test="beginStartDate != null and endStartDate != null and beginStartDate != '' and endStartDate != ''">
+				AND a.start_date BETWEEN #{beginStartDate} AND #{endStartDate}
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.userid = #{user.id}
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Hotel">
+		SELECT 
+			<include refid="hotelColumns"/>
+		FROM h_hotel a
+		<include refid="hotelJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO h_hotel(
+			name,
+			lat,
+			lng,
+			province,
+			city,
+			area,
+			address,
+			account,
+			pass,
+			leader,
+			phone,
+			contract,
+			money,
+			start_date,
+			state,
+			e_contract,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			out_time,
+			remind,
+			remarks,
+			del_flag,
+			id,
+			userid
+		) VALUES (
+			#{name},
+			#{lat},
+			#{lng},
+			#{province.id},
+			#{city.id},
+			#{area.id},
+			#{address},
+			#{account},
+			#{pass},
+			#{leader},
+			#{phone},
+			#{contract},
+			#{money},
+			#{startDate},
+			#{state},
+			#{eContract},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{outTime},
+			#{remind},
+			#{remarks},
+			#{delFlag},
+			#{id},
+			#{user.id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE h_hotel SET 	
+			name = #{name},
+			lat = #{lat},
+			lng = #{lng},
+			province = #{province.id},
+			city = #{city.id},
+			area = #{area.id},
+			address = #{address},
+			account = #{account},
+			pass = #{pass},
+			leader = #{leader},
+			phone = #{phone},
+			contract = #{contract},
+			money = #{money},
+			start_date = #{startDate},
+			state = #{state},
+			e_contract = #{eContract},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			out_time = #{outTime},
+			remind = #{remind},
+			remarks = #{remarks},
+			userid = #{user.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE h_hotel SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

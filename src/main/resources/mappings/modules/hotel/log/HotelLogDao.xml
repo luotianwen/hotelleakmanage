@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hotel.dao.log.HotelLogDao">
+    
+	<sql id="hotelLogColumns">
+		a.id AS "id",
+		a.h_id AS "h.id",
+		a.d_id AS "d.id",
+		a.pto AS "pto",
+		a.state AS "state",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.update_name AS "updateName",
+		a.type AS "type",
+		a.content AS "content",
+		a.start_date AS "startDate",
+		a.out_date AS "outDate",
+		a.num AS "num"
+	</sql>
+	
+	<sql id="hotelLogJoins">
+	</sql>
+    
+	<select id="get" resultType="HotelLog">
+		SELECT 
+			<include refid="hotelLogColumns"/>
+		FROM h_hotel_log a
+		<include refid="hotelLogJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="HotelLog">
+		SELECT 
+			<include refid="hotelLogColumns"/>
+		FROM h_hotel_log a
+		<include refid="hotelLogJoins"/>
+		<where>
+			
+			<if test="h != null and h.id != null and h.id != ''">
+				AND a.h_id = #{h.id}
+			</if>
+			<if test="d != null and d.id != null and d.id != ''">
+				AND a.d_id = #{d.id}
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
+			<if test="updateName != null and updateName != ''">
+				AND a.update_name = #{updateName}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="beginStartDate != null and endStartDate != null and beginStartDate != '' and endStartDate != ''">
+				AND a.start_date BETWEEN #{beginStartDate} AND #{endStartDate}
+			</if>
+			<if test="beginOutDate != null and endOutDate != null and beginOutDate != '' and endOutDate != ''">
+				AND a.out_date BETWEEN #{beginOutDate} AND #{endOutDate}
+			</if>
+			<if test="num != null and num != ''">
+				AND a.num = #{num}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="HotelLog">
+		SELECT 
+			<include refid="hotelLogColumns"/>
+		FROM h_hotel_log a
+		<include refid="hotelLogJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO h_hotel_log(
+			id,
+			h_id,
+			d_id,
+			pto,
+			state,
+			create_date,
+			update_date,
+			update_by,
+			update_name,
+			type,
+			content,
+			start_date,
+			out_date,
+			num
+		) VALUES (
+			#{id},
+			#{h.id},
+			#{d.id},
+			#{pto},
+			#{state},
+			#{createDate},
+			#{updateDate},
+			#{updateBy.id},
+			#{updateName},
+			#{type},
+			#{content},
+			#{startDate},
+			#{outDate},
+			#{num}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE h_hotel_log SET 	
+			h_id = #{h.id},
+			d_id = #{d.id},
+			pto = #{pto},
+			state = #{state},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			update_name = #{updateName},
+			type = #{type},
+			content = #{content},
+			start_date = #{startDate},
+			out_date = #{outDate},
+			num = #{num}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM h_hotel_log
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

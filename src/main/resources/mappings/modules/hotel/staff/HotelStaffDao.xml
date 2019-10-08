@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hotel.dao.staff.HotelStaffDao">
+    
+	<sql id="hotelStaffColumns">
+		a.id AS "id",
+		a.h_id AS "h.id",
+		a.num AS "num",
+		a.name AS "name",
+		a.phos AS "phos",
+		a.state AS "state",
+		a.account AS "account",
+		a.pass AS "pass",
+		a.position AS "position",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.userid AS "user.id",
+		u16.name AS "user.name"
+	</sql>
+	
+	<sql id="hotelStaffJoins">
+		LEFT JOIN sys_user u16 ON u16.id = a.userid
+	</sql>
+    
+	<select id="get" resultType="HotelStaff">
+		SELECT 
+			<include refid="hotelStaffColumns"/>
+		FROM h_hotel_staff a
+		<include refid="hotelStaffJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="HotelStaff">
+		SELECT 
+			<include refid="hotelStaffColumns"/>
+		FROM h_hotel_staff a
+		<include refid="hotelStaffJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="account != null and account != ''">
+				AND a.account = #{account}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="HotelStaff">
+		SELECT 
+			<include refid="hotelStaffColumns"/>
+		FROM h_hotel_staff a
+		<include refid="hotelStaffJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO h_hotel_staff(
+			id,
+			h_id,
+			num,
+			name,
+			phos,
+			state,
+			account,
+			pass,
+			position,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			userid
+		) VALUES (
+			#{id},
+			#{h.id},
+			#{num},
+			#{name},
+			#{phos},
+			#{state},
+			#{account},
+			#{pass},
+			#{position},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{user.id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE h_hotel_staff SET 	
+			h_id = #{h.id},
+			num = #{num},
+			name = #{name},
+			phos = #{phos},
+			state = #{state},
+			account = #{account},
+			pass = #{pass},
+			position = #{position},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			userid = #{user.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE h_hotel_staff SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
