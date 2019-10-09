@@ -67,7 +67,9 @@ public class Test {
 
                         System.out.println("设备" + data.getCameraID() + "识别出人脸,员工号为：" + data.getPersonID());
                         //将人脸图byte[]字符转化为BASE64
-                        encoder.encode(data.getFeatureImageData());
+                       String a= encoder.encode(data.getFeatureImageData());
+                        String imgBase64 = "data:image/png;base64,"+a;
+                        System.out.println(imgBase64);
 
                     } catch (Exception ex) {
                         System.out.println("处理抓拍到的人脸数据时发生异常：" + ex);

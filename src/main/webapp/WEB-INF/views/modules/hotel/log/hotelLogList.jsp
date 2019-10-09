@@ -72,6 +72,8 @@
 			<tr>
 				<th>酒店id</th>
 				<th>设备id</th>
+				<th>图像</th>
+				<th>内容</th>
 				<th>处理状态</th>
 				<th>更新时间</th>
 				<th>处理人</th>
@@ -91,6 +93,12 @@
 				</a></td>
 				<td>
 					${hotelLog.d.id}
+				</td>
+				<td>
+					<img   src="${hotelLog.pto}" width="80" >
+				</td>
+				<td>
+						${hotelLog.content}
 				</td>
 				<td>
 					${hotelLog.state}

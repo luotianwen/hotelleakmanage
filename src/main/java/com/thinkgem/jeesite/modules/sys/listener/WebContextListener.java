@@ -1,6 +1,5 @@
 package com.thinkgem.jeesite.modules.sys.listener;
 
-import com.thinkgem.jeesite.modules.hotel.face.FaceUtils;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -10,7 +9,7 @@ public class WebContextListener extends org.springframework.web.context.ContextL
 	
 	@Override
 	public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
-		FaceUtils.init();
+
 		if (!SystemService.printKeyLoadMessage()){
 			return null;
 		}

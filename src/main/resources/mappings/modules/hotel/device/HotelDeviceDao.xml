@@ -66,16 +66,10 @@
 		FROM h_hotel_device a
 		<include refid="hotelDeviceJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = 0
+			and a.state='1'
 		</where>		
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
+
 	</select>
 	
 	<insert id="insert">

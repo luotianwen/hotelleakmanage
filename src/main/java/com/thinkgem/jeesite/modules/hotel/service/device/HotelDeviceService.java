@@ -3,15 +3,15 @@
  */
 package com.thinkgem.jeesite.modules.hotel.service.device;
 
-import java.util.List;
-
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.hotel.dao.device.HotelDeviceDao;
+import com.thinkgem.jeesite.modules.hotel.entity.device.HotelDevice;
+import com.thinkgem.jeesite.modules.hotel.face.FaceUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.hotel.entity.device.HotelDevice;
-import com.thinkgem.jeesite.modules.hotel.dao.device.HotelDeviceDao;
+import java.util.List;
 
 /**
  * 设备管理Service
@@ -37,6 +37,7 @@ public class HotelDeviceService extends CrudService<HotelDeviceDao, HotelDevice>
 	@Transactional(readOnly = false)
 	public void save(HotelDevice hotelDevice) {
 		super.save(hotelDevice);
+		FaceUtils.initHd();
 	}
 	
 	@Transactional(readOnly = false)

@@ -48,7 +48,7 @@
 		<div class="control-group">
 			<label class="control-label">照片：</label>
 			<div class="controls">
-				<form:input path="pto" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<img id="imgs" src="${hotelLog.pto}">
 			</div>
 		</div>
 		<div class="control-group">

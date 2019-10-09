@@ -81,20 +81,16 @@ public class HotelStaffService extends CrudService<HotelStaffDao, HotelStaff> {
 			f.setJpgFileContent(new byte[][]{data});
 			//f.setJpgFilePath(new String[]{"D:\\face\\192.168.1.80\\2019-10-08\\截图\\17_35_00.803951.jpg"});
 			if(FaceUtils.listFace(f.getId(),hs1.getIp())){
-				if(FaceUtils.modifyFace(f, hs1.getIp())){
-
+				if(!FaceUtils.modifyFace(f, hs1.getIp())){
+					throw new Exception("图片不合格");
 				}
-				else {
 
-				}
 			}
 			else {
-				if (FaceUtils.addFace(f, hs1.getIp())) {
-
+				if (!FaceUtils.addFace(f, hs1.getIp())) {
+					throw new Exception("图片不合格");
 				}
-				else{
 
-				}
 			}
 
 		}
