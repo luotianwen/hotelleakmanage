@@ -49,7 +49,10 @@
 		<include refid="hotelJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
+	<select id="findGroup" resultType="Hotel">
+	select  a4.name as  'province.name' ,count(h.id)as name  from h_hotel h
+	LEFT JOIN sys_area a4 ON a4.id =  province where h.del_flag=0 GROUP BY province
+	</select>
 	<select id="findList" resultType="Hotel">
 		SELECT 
 			<include refid="hotelColumns"/>

@@ -70,5 +70,8 @@ public class HotelService extends CrudService<HotelDao, Hotel> {
 	public void delete(Hotel hotel) {
 		super.delete(hotel);
 	}
-	
+
+    public List<Hotel> findGroup() {
+		return dao.findGroup();
+    }
 }

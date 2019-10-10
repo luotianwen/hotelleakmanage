@@ -7,6 +7,8 @@ import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
 
+import java.util.List;
+
 /**
  * 酒店管理DAO接口
  * @author 罗天文
@@ -14,5 +16,6 @@ import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
  */
 @MyBatisDao
 public interface HotelDao extends CrudDao<Hotel> {
-	
+
+    List<Hotel> findGroup();
 }

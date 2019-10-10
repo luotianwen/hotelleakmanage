@@ -22,6 +22,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
 import com.thinkgem.jeesite.modules.hotel.service.hotel.HotelService;
 
+import java.util.List;
+
 /**
  * 酒店管理Controller
  * @author 罗天文
@@ -54,6 +56,13 @@ public class HotelController extends BaseController {
 		return "modules/hotel/hotel/hotelList";
 	}
 
+	@RequiresPermissions("hotel:hotel:hotel:view")
+	@RequestMapping(value = "index")
+	public String index(Model model) {
+		List<Hotel> hotels=hotelService.findGroup();
+		model.addAttribute("hotels", hotels);
+		return "modules/hotel/hotel/index";
+	}
 	@RequiresPermissions("hotel:hotel:hotel:view")
 	@RequestMapping(value = "form")
 	public String form(Hotel hotel, Model model) {

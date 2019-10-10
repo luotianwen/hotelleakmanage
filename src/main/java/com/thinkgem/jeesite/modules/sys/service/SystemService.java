@@ -417,7 +417,9 @@ public class SystemService extends BaseService implements InitializingBean {
 	 */
 	private static boolean isSynActivitiIndetity = true;
 	public void afterPropertiesSet() throws Exception {
-		FaceUtils.init();
+		if("true".equals(Global.getConfig("cs.use"))) {
+			FaceUtils.init();
+		}
 		if (!Global.isSynActivitiIndetity()){
 			return;
 		}
