@@ -58,7 +58,6 @@ public class HotelLog extends DataEntity<HotelLog> {
 		this.d = d;
 	}
 	
-	@Length(min=0, max=255, message="照片长度必须介于 0 和 255 之间")
 	public String getPto() {
 		return pto;
 	}
@@ -67,7 +66,6 @@ public class HotelLog extends DataEntity<HotelLog> {
 		this.pto = pto;
 	}
 	
-	@Length(min=0, max=2, message="处理状态长度必须介于 0 和 2 之间")
 	public String getState() {
 		return state;
 	}
@@ -76,7 +74,6 @@ public class HotelLog extends DataEntity<HotelLog> {
 		this.state = state;
 	}
 	
-	@Length(min=0, max=100, message="处理人名称长度必须介于 0 和 100 之间")
 	public String getUpdateName() {
 		return updateName;
 	}
@@ -85,7 +82,6 @@ public class HotelLog extends DataEntity<HotelLog> {
 		this.updateName = updateName;
 	}
 	
-	@Length(min=0, max=255, message="类型长度必须介于 0 和 255 之间")
 	public String getType() {
 		return type;
 	}
@@ -94,7 +90,6 @@ public class HotelLog extends DataEntity<HotelLog> {
 		this.type = type;
 	}
 	
-	@Length(min=0, max=255, message="内容长度必须介于 0 和 255 之间")
 	public String getContent() {
 		return content;
 	}
@@ -121,7 +116,6 @@ public class HotelLog extends DataEntity<HotelLog> {
 		this.outDate = outDate;
 	}
 	
-	@Length(min=0, max=20, message="房间号长度必须介于 0 和 20 之间")
 	public String getNum() {
 		return num;
 	}

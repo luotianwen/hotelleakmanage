@@ -19,30 +19,40 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/hotel/check/hotelCheck/">入住管理列表</a></li>
-		<shiro:hasPermission name="hotel:check:hotelCheck:edit"><li><a href="${ctx}/hotel/check/hotelCheck/form">入住管理添加</a></li></shiro:hasPermission>
-	</ul>
+	<%--	<shiro:hasPermission name="hotel:check:hotelCheck:edit"><li><a href="${ctx}/hotel/check/hotelCheck/form">入住管理添加</a></li></shiro:hasPermission>
+	--%></ul>
 	<form:form id="searchForm" modelAttribute="hotelCheck" action="${ctx}/hotel/check/hotelCheck/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>酒店id：</label>
-				<form:input path="h.id" htmlEscape="false" maxlength="255" class="input-medium"/>
-			</li>
+
 			<li><label>房间号：</label>
 				<form:input path="num" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 			<li><label>名称：</label>
 				<form:input path="name" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
-			<li><label>离开时间：</label>
-				<input name="endDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					value="<fmt:formatDate value="${hotelCheck.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			<li><label>是否离开：</label>
+				<form:select path="state" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</li>
-			<li><label>进来时间：</label>
-				<input name="startDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					value="<fmt:formatDate value="${hotelCheck.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			<li><label>进入时间：</label>
+				<input name="beginStartDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					   value="<fmt:formatDate value="${hotelCheck.beginStartDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/> -
+				<input name="endStartDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					   value="<fmt:formatDate value="${hotelCheck.endStartDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</li>
+			<li><label>离开时间：</label>
+				<input name="beginOutDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					   value="<fmt:formatDate value="${hotelCheck.beginOutDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/> -
+				<input name="endOutDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					   value="<fmt:formatDate value="${hotelCheck.endOutDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
@@ -52,13 +62,13 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>酒店id</th>
+				<th>酒店</th>
 				<th>房间号</th>
 				<th>名称</th>
 				<th>照片</th>
 				<th>离开时间</th>
 				<th>进来时间</th>
-				<th>开通状态</th>
+				<th>状态</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
 				<shiro:hasPermission name="hotel:check:hotelCheck:edit"><th>操作</th></shiro:hasPermission>
@@ -67,6 +77,9 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="hotelCheck">
 			<tr>
+				<td>
+						${hotelCheck.h.name}
+				</td>
 				<td><a href="${ctx}/hotel/check/hotelCheck/form?id=${hotelCheck.id}">
 					${hotelCheck.h.id}
 				</a></td>
@@ -77,7 +90,7 @@
 					${hotelCheck.name}
 				</td>
 				<td>
-					${hotelCheck.phos}
+					<img   src="${hotelCheck.phos}" width="80" >
 				</td>
 				<td>
 					<fmt:formatDate value="${hotelCheck.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -85,9 +98,11 @@
 				<td>
 					<fmt:formatDate value="${hotelCheck.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
+
 				<td>
-					${hotelCheck.state}
+						${fns:getDictLabel(hotelCheck.state, 'yes_no', '')}
 				</td>
+
 				<td>
 					<fmt:formatDate value="${hotelCheck.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>

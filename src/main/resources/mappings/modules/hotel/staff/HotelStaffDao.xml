@@ -5,6 +5,7 @@
 	<sql id="hotelStaffColumns">
 		a.id AS "id",
 		a.h_id AS "h.id",
+		a4.name AS "h.name",
 		a.num AS "num",
 		a.name AS "name",
 		a.phos AS "phos",
@@ -23,6 +24,7 @@
 	</sql>
 	
 	<sql id="hotelStaffJoins">
+LEFT JOIN h_hotel a4 ON a4.id = a.h_id
 		LEFT JOIN sys_user u16 ON u16.id = a.userid
 	</sql>
     

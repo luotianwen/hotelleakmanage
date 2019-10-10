@@ -19,29 +19,33 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/hotel/log/hotelLog/">酒店日志列表</a></li>
-		<shiro:hasPermission name="hotel:log:hotelLog:edit"><li><a href="${ctx}/hotel/log/hotelLog/form">酒店日志添加</a></li></shiro:hasPermission>
-	</ul>
+	<%--	<shiro:hasPermission name="hotel:log:hotelLog:edit"><li><a href="${ctx}/hotel/log/hotelLog/form">酒店日志添加</a></li></shiro:hasPermission>
+	--%></ul>
 	<form:form id="searchForm" modelAttribute="hotelLog" action="${ctx}/hotel/log/hotelLog/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>酒店id：</label>
-				<form:input path="h.id" htmlEscape="false" maxlength="32" class="input-medium"/>
+			<li><label>酒店名称：</label>
+				<form:input path="h.name" htmlEscape="false" maxlength="32" class="input-medium"/>
 			</li>
-			<li><label>设备id：</label>
-				<form:input path="d.id" htmlEscape="false" maxlength="32" class="input-medium"/>
+			<li><label>设备名称：</label>
+				<form:input path="d.name" htmlEscape="false" maxlength="32" class="input-medium"/>
 			</li>
 			<li><label>处理状态：</label>
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-medium"/>
+				<form:select path="state" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('h_state')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</li>
-			<li><label>处理人：</label>
-				<form:input path="updateBy.id" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
+
 			<li><label>处理人名称：</label>
 				<form:input path="updateName" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
 			<li><label>类型：</label>
-				<form:input path="type" htmlEscape="false" maxlength="255" class="input-medium"/>
+				<form:select path="type" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('h_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</li>
 			<li><label>进入时间：</label>
 				<input name="beginStartDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
@@ -70,13 +74,12 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>酒店id</th>
-				<th>设备id</th>
+				<th>酒店</th>
+				<th>设备</th>
 				<th>图像</th>
 				<th>内容</th>
 				<th>处理状态</th>
 				<th>更新时间</th>
-				<th>处理人</th>
 				<th>处理人名称</th>
 				<th>类型</th>
 				<th>进入时间</th>
@@ -89,10 +92,10 @@
 		<c:forEach items="${page.list}" var="hotelLog">
 			<tr>
 				<td><a href="${ctx}/hotel/log/hotelLog/form?id=${hotelLog.id}">
-					${hotelLog.h.id}
+					${hotelLog.h.name}
 				</a></td>
 				<td>
-					${hotelLog.d.id}
+					${hotelLog.d.name}
 				</td>
 				<td>
 					<img   src="${hotelLog.pto}" width="80" >
@@ -101,19 +104,17 @@
 						${hotelLog.content}
 				</td>
 				<td>
-					${hotelLog.state}
+						${fns:getDictLabel(hotelLog.state, 'h_state', '')}
 				</td>
 				<td>
 					<fmt:formatDate value="${hotelLog.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<td>
-					${hotelLog.updateBy.id}
-				</td>
+
 				<td>
 					${hotelLog.updateName}
 				</td>
 				<td>
-					${hotelLog.type}
+						${fns:getDictLabel(hotelLog.type, 'h_type', '')}
 				</td>
 				<td>
 					<fmt:formatDate value="${hotelLog.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

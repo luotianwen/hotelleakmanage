@@ -19,17 +19,23 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/hotel/staff/hotelStaff/">酒店员工列表</a></li>
-		<shiro:hasPermission name="hotel:staff:hotelStaff:edit"><li><a href="${ctx}/hotel/staff/hotelStaff/form">酒店员工添加</a></li></shiro:hasPermission>
-	</ul>
+	<%--	<shiro:hasPermission name="hotel:staff:hotelStaff:edit"><li><a href="${ctx}/hotel/staff/hotelStaff/form">酒店员工添加</a></li></shiro:hasPermission>
+--%>	</ul>
 	<form:form id="searchForm" modelAttribute="hotelStaff" action="${ctx}/hotel/staff/hotelStaff/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><label>酒店名称：</label>
+				<form:input path="h.name" htmlEscape="false" maxlength="255" class="input-medium"/>
+			</li>
 			<li><label>名称：</label>
 				<form:input path="name" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 			<li><label>开通状态：</label>
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-medium"/>
+				<form:select path="state" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</li>
 			<li><label>账号：</label>
 				<form:input path="account" htmlEscape="false" maxlength="255" class="input-medium"/>
@@ -43,6 +49,7 @@
 		<thead>
 			<tr>
 				<th>序号</th>
+				<th>酒店名称</th>
 				<th>名称</th>
 				<th>开通状态</th>
 				<th>账号</th>
@@ -58,11 +65,15 @@
 					${hotelStaff.num}
 				</a></td>
 				<td>
+						${hotelStaff.h.name}
+				</td>
+				<td>
 					${hotelStaff.name}
 				</td>
 				<td>
-					${hotelStaff.state}
+						${fns:getDictLabel(hotelStaff.state, 'yes_no', '')}
 				</td>
+
 				<td>
 					${hotelStaff.account}
 				</td>

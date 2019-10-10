@@ -5,6 +5,7 @@
 	<sql id="hotelDeviceColumns">
 		a.h_id AS "h.id",
 		a.name AS "name",
+		a4.name AS "h.name",
 		a.num AS "num",
 		a.address AS "address",
 		a.ip AS "ip",
@@ -20,6 +21,7 @@
 	</sql>
 	
 	<sql id="hotelDeviceJoins">
+		LEFT JOIN h_hotel a4 ON a4.id = a.h_id
 	</sql>
     
 	<select id="get" resultType="HotelDevice">
@@ -41,10 +43,10 @@
 				AND a.h_id = #{h.id}
 			</if>
 			<if test="name != null and name != ''">
-				AND a.name LIKE 
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+				AND a.name LIKE  concat('%',#{name},'%')
+			</if>
+			<if test="ip != null and ip != ''">
+				AND a.ip = #{ip}
 			</if>
 			<if test="state != null and state != ''">
 				AND a.state = #{state}

@@ -5,12 +5,21 @@
 	<title>酒店员工管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+        var p=false;
+        <c:if test="${!empty hotelStaff.id}">
+        p=true;
+        </c:if>
 		$(document).ready(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
+                    if(p){
+                        loading('正在提交，请稍等...');
+                        form.submit();
+                    }
+                    else{
+                        top.$.jBox.tip('请拍照','warning');
+                    }
 				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
@@ -32,11 +41,12 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="hotelStaff" action="${ctx}/hotel/staff/hotelStaff/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="h.id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">酒店id：</label>
+			<label class="control-label">酒店：</label>
 			<div class="controls">
-				<form:input path="h.id" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="h.name" htmlEscape="false" maxlength="255" class="input-xlarge " readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -70,7 +80,10 @@
 		<div class="control-group">
 			<label class="control-label">开通状态：</label>
 			<div class="controls">
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-xlarge "/>
+				<form:select path="state" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -97,13 +110,7 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">用户：</label>
-			<div class="controls">
-				<sys:treeselect id="user" name="user.id" value="${hotelStaff.user.id}" labelName="user.name" labelValue="${hotelStaff.user.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="" allowClear="true" notAllowSelectParent="true"/>
-			</div>
-		</div>
+		 <form:hidden path="user.id"/>
 		<div class="form-actions">
 			<shiro:hasPermission name="hotel:staff:hotelStaff:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

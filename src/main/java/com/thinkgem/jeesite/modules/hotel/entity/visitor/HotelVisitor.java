@@ -25,7 +25,43 @@ public class HotelVisitor extends DataEntity<HotelVisitor> {
 	private Date endDate;		// 离开时间
 	private Date startDate;		// 进来时间
 	private String state;		// 开通状态
-	
+	private Date beginStartDate;		// 开始 进入时间
+	private Date endStartDate;		// 结束 进入时间
+	private Date beginOutDate;		// 开始 离开时间
+	private Date endOutDate;		// 结束 离开时间
+
+	public Date getBeginStartDate() {
+		return beginStartDate;
+	}
+
+	public void setBeginStartDate(Date beginStartDate) {
+		this.beginStartDate = beginStartDate;
+	}
+
+	public Date getEndStartDate() {
+		return endStartDate;
+	}
+
+	public void setEndStartDate(Date endStartDate) {
+		this.endStartDate = endStartDate;
+	}
+
+	public Date getBeginOutDate() {
+		return beginOutDate;
+	}
+
+	public void setBeginOutDate(Date beginOutDate) {
+		this.beginOutDate = beginOutDate;
+	}
+
+	public Date getEndOutDate() {
+		return endOutDate;
+	}
+
+	public void setEndOutDate(Date endOutDate) {
+		this.endOutDate = endOutDate;
+	}
+
 	public HotelVisitor() {
 		super();
 	}
@@ -42,7 +78,6 @@ public class HotelVisitor extends DataEntity<HotelVisitor> {
 		this.h = h;
 	}
 	
-	@Length(min=0, max=255, message="房间号长度必须介于 0 和 255 之间")
 	public String getNum() {
 		return num;
 	}
@@ -51,7 +86,6 @@ public class HotelVisitor extends DataEntity<HotelVisitor> {
 		this.num = num;
 	}
 	
-	@Length(min=0, max=255, message="名称长度必须介于 0 和 255 之间")
 	public String getName() {
 		return name;
 	}
@@ -60,7 +94,6 @@ public class HotelVisitor extends DataEntity<HotelVisitor> {
 		this.name = name;
 	}
 	
-	@Length(min=0, max=255, message="照片长度必须介于 0 和 255 之间")
 	public String getPhos() {
 		return phos;
 	}
@@ -87,7 +120,6 @@ public class HotelVisitor extends DataEntity<HotelVisitor> {
 		this.startDate = startDate;
 	}
 	
-	@Length(min=0, max=2, message="开通状态长度必须介于 0 和 2 之间")
 	public String getState() {
 		return state;
 	}

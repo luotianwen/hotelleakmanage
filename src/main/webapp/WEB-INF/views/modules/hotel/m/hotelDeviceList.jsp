@@ -29,7 +29,11 @@
 				<form:input path="name" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 			<li><label>开通状态：</label>
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-medium"/>
+				<form:select path="state" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value"
+								  htmlEscape="false"/>
+				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
@@ -39,10 +43,11 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>酒店</th>
 				<th>名称</th>
 				<th>序号</th>
 				<th>安装位置</th>
-				<th>ip地址</th>
+				<th>相机序列号</th>
 				<th>开通状态</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
@@ -52,6 +57,9 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="hotelDevice">
 			<tr>
+				<td>
+						${hotelDevice.h.name}
+				</td>
 				<td><a href="${ctx}/hotel/m/hotelDevice/form?id=${hotelDevice.id}">
 					${hotelDevice.name}
 				</a></td>
@@ -65,7 +73,7 @@
 					${hotelDevice.ip}
 				</td>
 				<td>
-					${hotelDevice.state}
+						${fns:getDictLabel(hotelDevice.state, 'yes_no', '')}
 				</td>
 				<td>
 					<fmt:formatDate value="${hotelDevice.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
