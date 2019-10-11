@@ -32,29 +32,29 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="hotelLog" action="${ctx}/hotel/m/hotelLog/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
+		<form:hidden path="d.id"/>
+		<form:hidden path="h.id"/>
+		<sys:message content="${message}"/>
 		<div class="control-group">
-			<label class="control-label">酒店id：</label>
+			<label class="control-label">设备：</label>
 			<div class="controls">
-				<form:input path="h.id" htmlEscape="false" maxlength="32" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">设备id：</label>
-			<div class="controls">
-				<form:input path="d.id" htmlEscape="false" maxlength="32" class="input-xlarge "/>
+				<form:input path="d.name" htmlEscape="false" maxlength="32" class="input-xlarge " readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">照片：</label>
 			<div class="controls">
-				<form:input path="pto" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:hidden path="pto"/>
+				<img id="imgs" src="${hotelLog.pto}">
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">处理状态：</label>
 			<div class="controls">
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-xlarge "/>
+				<form:select path="state" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('h_state')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -66,7 +66,10 @@
 		<div class="control-group">
 			<label class="control-label">类型：</label>
 			<div class="controls">
-				<form:input path="type" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:select path="type" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('h_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -79,16 +82,16 @@
 			<label class="control-label">进入时间：</label>
 			<div class="controls">
 				<input name="startDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${hotelLog.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+					   value="<fmt:formatDate value="${hotelLog.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">离开时间：</label>
 			<div class="controls">
 				<input name="outDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${hotelLog.outDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+					   value="<fmt:formatDate value="${hotelLog.outDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="control-group">

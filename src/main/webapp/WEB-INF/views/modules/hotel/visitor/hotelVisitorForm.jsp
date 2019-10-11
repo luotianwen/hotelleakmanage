@@ -32,11 +32,12 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="hotelVisitor" action="${ctx}/hotel/visitor/hotelVisitor/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="h.id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">酒店id：</label>
+			<label class="control-label">酒店名称：</label>
 			<div class="controls">
-				<form:input path="h.id" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="h.name" htmlEscape="false" maxlength="255" class="input-xxlarge " readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -54,7 +55,8 @@
 		<div class="control-group">
 			<label class="control-label">照片：</label>
 			<div class="controls">
-				<form:input path="phos" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<img   src="${hotelVisitor.phos}" width="80" >
+				<form:hidden path="phos"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -74,9 +76,12 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">开通状态：</label>
+			<label class="control-label">是否离开：</label>
 			<div class="controls">
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-xlarge "/>
+				<form:select path="state" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">

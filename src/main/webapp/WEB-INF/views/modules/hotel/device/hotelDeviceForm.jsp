@@ -32,11 +32,12 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="hotelDevice" action="${ctx}/hotel/device/hotelDevice/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="h.id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">酒店id：</label>
+			<label class="control-label">酒店：</label>
 			<div class="controls">
-				<form:input path="h.id" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="h.name" htmlEscape="false" maxlength="255" class="input-xlarge " readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -58,7 +59,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">ip地址：</label>
+			<label class="control-label">相机序列号：</label>
 			<div class="controls">
 				<form:input path="ip" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>
@@ -74,7 +75,10 @@
 		<div class="control-group">
 			<label class="control-label">开通状态：</label>
 			<div class="controls">
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-xlarge "/>
+				<form:select path="state" class="input-xlarge required">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">

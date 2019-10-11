@@ -4,6 +4,7 @@
     
 	<sql id="hotelVisitorColumns">
 		a.h_id AS "h.id",
+		a4.name AS "h.name",
 		a.num AS "num",
 		a.name AS "name",
 		a.phos AS "phos",
@@ -20,6 +21,7 @@
 	</sql>
 	
 	<sql id="hotelVisitorJoins">
+		LEFT JOIN h_hotel a4 ON a4.id = a.h_id
 	</sql>
     
 	<select id="get" resultType="HotelVisitor">
@@ -44,16 +46,13 @@
 				AND a.num = #{num}
 			</if>
 			<if test="name != null and name != ''">
-				AND a.name LIKE 
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+				AND a.name LIKE  concat('%',#{name},'%')
 			</if>
-			<if test="endDate != null and endDate != ''">
-				AND a.end_date = #{endDate}
+			<if test="beginStartDate != null and endStartDate != null and beginStartDate != '' and endStartDate != ''">
+				AND a.start_date BETWEEN #{beginStartDate} AND #{endStartDate}
 			</if>
-			<if test="startDate != null and startDate != ''">
-				AND a.start_date = #{startDate}
+			<if test="beginOutDate != null and endOutDate != null and beginOutDate != '' and endOutDate != ''">
+				AND a.end_date BETWEEN #{beginOutDate} AND #{endOutDate}
 			</if>
 			<if test="state != null and state != ''">
 				AND a.state = #{state}

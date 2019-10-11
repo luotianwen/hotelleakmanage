@@ -29,7 +29,10 @@
 				<form:input path="name" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 			<li><label>开通状态：</label>
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-medium"/>
+				<form:select path="state" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</li>
 			<li><label>账号：</label>
 				<form:input path="account" htmlEscape="false" maxlength="255" class="input-medium"/>
@@ -43,6 +46,7 @@
 		<thead>
 			<tr>
 				<th>序号</th>
+				<th>酒店名称</th>
 				<th>名称</th>
 				<th>开通状态</th>
 				<th>账号</th>
@@ -55,22 +59,26 @@
 		<c:forEach items="${page.list}" var="hotelStaff">
 			<tr>
 				<td><a href="${ctx}/hotel/m/hotelStaff/form?id=${hotelStaff.id}">
-					${hotelStaff.num}
+						${hotelStaff.num}
 				</a></td>
 				<td>
-					${hotelStaff.name}
+						${hotelStaff.h.name}
 				</td>
 				<td>
-					${hotelStaff.state}
+						${hotelStaff.name}
 				</td>
 				<td>
-					${hotelStaff.account}
+						${fns:getDictLabel(hotelStaff.state, 'yes_no', '')}
+				</td>
+
+				<td>
+						${hotelStaff.account}
 				</td>
 				<td>
 					<fmt:formatDate value="${hotelStaff.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${hotelStaff.remarks}
+						${hotelStaff.remarks}
 				</td>
 				<shiro:hasPermission name="hotel:m:hotelStaff:edit"><td>
     				<a href="${ctx}/hotel/m/hotelStaff/form?id=${hotelStaff.id}">修改</a>

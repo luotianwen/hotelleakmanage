@@ -5,7 +5,9 @@
 	<sql id="hotelLogColumns">
 		a.id AS "id",
 		a.h_id AS "h.id",
+		a4.name AS "h.name",
 		a.d_id AS "d.id",
+		a5.name AS "d.name",
 		a.pto AS "pto",
 		a.state AS "state",
 		a.create_date AS "createDate",
@@ -20,6 +22,9 @@
 	</sql>
 	
 	<sql id="hotelLogJoins">
+		LEFT JOIN h_hotel a4 ON a4.id = a.h_id
+		LEFT JOIN h_hotel_device a5 ON a5.id = a.d_id
+
 	</sql>
     
 	<select id="get" resultType="HotelLog">

@@ -32,29 +32,35 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="hotelLog" action="${ctx}/hotel/log/hotelLog/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="h.id"/>
+		<form:hidden path="d.id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">酒店id：</label>
+			<label class="control-label">酒店：</label>
 			<div class="controls">
-				<form:input path="h.id" htmlEscape="false" maxlength="32" class="input-xlarge "/>
+				<form:input path="h.name" htmlEscape="false" maxlength="32" class="input-xlarge " readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">设备id：</label>
+			<label class="control-label">设备：</label>
 			<div class="controls">
-				<form:input path="d.id" htmlEscape="false" maxlength="32" class="input-xlarge "/>
+				<form:input path="d.name" htmlEscape="false" maxlength="32" class="input-xlarge " readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">照片：</label>
 			<div class="controls">
+				<form:hidden path="pto"/>
 				<img id="imgs" src="${hotelLog.pto}">
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">处理状态：</label>
 			<div class="controls">
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-xlarge "/>
+					<form:select path="state" class="input-xlarge ">
+						<form:option value="" label=""/>
+						<form:options items="${fns:getDictList('h_state')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -66,7 +72,10 @@
 		<div class="control-group">
 			<label class="control-label">类型：</label>
 			<div class="controls">
-				<form:input path="type" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:select path="type" class="input-xlarge ">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('h_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">

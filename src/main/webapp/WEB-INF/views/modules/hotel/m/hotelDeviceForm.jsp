@@ -32,41 +32,37 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="hotelDevice" action="${ctx}/hotel/m/hotelDevice/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<form:hidden path="h.id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">酒店id：</label>
-			<div class="controls">
-				<form:input path="h.id" htmlEscape="false" maxlength="255" class="input-xlarge "/>
-			</div>
-		</div>
+
 		<div class="control-group">
 			<label class="control-label">名称：</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="name" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">序号：</label>
 			<div class="controls">
-				<form:input path="num" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="num" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">安装位置：</label>
 			<div class="controls">
-				<form:input path="address" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="address" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">ip地址：</label>
+			<label class="control-label">相机序列号：</label>
 			<div class="controls">
-				<form:input path="ip" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="ip" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">开通时间：</label>
 			<div class="controls">
-				<input name="startDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+				<input name="startDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
 					value="<fmt:formatDate value="${hotelDevice.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
@@ -74,7 +70,10 @@
 		<div class="control-group">
 			<label class="control-label">开通状态：</label>
 			<div class="controls">
-				<form:input path="state" htmlEscape="false" maxlength="2" class="input-xlarge "/>
+				<form:select path="state" class="input-xlarge required">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
