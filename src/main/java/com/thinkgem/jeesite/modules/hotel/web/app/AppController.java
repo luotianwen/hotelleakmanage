@@ -1,8 +1,11 @@
 package com.thinkgem.jeesite.modules.hotel.web.app;
 
+import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
+import com.thinkgem.jeesite.modules.hotel.entity.log.HotelLog;
 import com.thinkgem.jeesite.modules.hotel.service.hotel.HotelService;
+import com.thinkgem.jeesite.modules.hotel.service.log.HotelLogService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -11,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.management.resources.agent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +26,52 @@ public class AppController {
     private SystemService systemService;
     @Autowired
     private HotelService hotelService;
+    @Autowired
+    private HotelLogService hotelLogService;
+    @RequestMapping(value ="baojing",method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseData baojing(String hid ,int pageNo) {
+        Page page1=new Page<HotelLog>();
+        ResponseData<Page> d = new ResponseData();
+        HotelLog hotelLog=new HotelLog();
+        hotelLog.setH(new Hotel(hid));
+        hotelLog.setType("1");
+        hotelLog.setState("0");
+        page1.setPageNo(pageNo);
+        page1.setOrderBy("a.start_date desc ");
+        Page<HotelLog> page = hotelLogService.findPage(page1, hotelLog);
+        d.setData(page);
+        return d;
+    }
+    @RequestMapping(value ="logupdate",method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseData logupdate(String uid ,String name,String logId,String state) {
+        ResponseData d = new ResponseData();
+        HotelLog log=hotelLogService.get(logId);
+        log.setState(state);
+        log.setUpdateBy(new User(uid));
+        log.setUpdateName(name);
+        hotelLogService.save(log);
+        return d;
+    }
+
+    @RequestMapping(value ="tishi",method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseData tishi(String hid ,int pageNo) {
+        Page page1=new Page<HotelLog>();
+        ResponseData<Page> d = new ResponseData();
+        HotelLog hotelLog=new HotelLog();
+        hotelLog.setH(new Hotel(hid));
+        hotelLog.setType("1");
+        hotelLog.setState("0");
+        page1.setPageNo(pageNo);
+        page1.setOrderBy("a.start_date desc ");
+        Page<HotelLog> page = hotelLogService.findPage(page1, hotelLog);
+        d.setData(page);
+        return d;
+    }
+
+
     @RequestMapping(value ="login",method = {RequestMethod.POST})
     @ResponseBody
     public ResponseData login(String name,String pwd ) {
