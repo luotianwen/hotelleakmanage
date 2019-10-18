@@ -2,6 +2,7 @@ package com.thinkgem.jeesite.modules.hotel.web.app;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
 import com.thinkgem.jeesite.modules.hotel.entity.log.HotelLog;
 import com.thinkgem.jeesite.modules.hotel.service.hotel.HotelService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -21,14 +23,14 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "${frontPath}/app")
-public class AppController {
+public class AppController extends BaseController {
     @Autowired
     private SystemService systemService;
     @Autowired
     private HotelService hotelService;
     @Autowired
     private HotelLogService hotelLogService;
-    @RequestMapping(value ="baojing",method = {RequestMethod.POST})
+    @RequestMapping(value ="baojing" )
     @ResponseBody
     public ResponseData baojing(String hid ,int pageNo) {
         Page page1=new Page<HotelLog>();
@@ -43,7 +45,7 @@ public class AppController {
         d.setData(page);
         return d;
     }
-    @RequestMapping(value ="logupdate",method = {RequestMethod.POST})
+    @RequestMapping(value ="logupdate")
     @ResponseBody
     public ResponseData logupdate(String uid ,String name,String logId,String state) {
         ResponseData d = new ResponseData();
@@ -55,7 +57,7 @@ public class AppController {
         return d;
     }
 
-    @RequestMapping(value ="tishi",method = {RequestMethod.POST})
+    @RequestMapping(value ="tishi")
     @ResponseBody
     public ResponseData tishi(String hid ,int pageNo) {
         Page page1=new Page<HotelLog>();
@@ -72,9 +74,9 @@ public class AppController {
     }
 
 
-    @RequestMapping(value ="login",method = {RequestMethod.POST})
+    @RequestMapping(value ="login")
     @ResponseBody
-    public ResponseData login(String name,String pwd ) {
+    public ResponseData login( String name, String pwd ) {
         ResponseData d=new ResponseData();
         if(StringUtils.isEmpty(name)||StringUtils.isEmpty(pwd)){
             d.setCode("0");
@@ -93,7 +95,7 @@ public class AppController {
             return d;
         }
         Hotel h=new Hotel();
-        h.setUser(UserUtils.getUser());
+        h.setUser(user);
         List<Hotel> list=hotelService.findList(h);
         if(list==null||list.size()!=1){
             d.setCode("0");
@@ -107,7 +109,7 @@ public class AppController {
         d.setData(map);
         return d;
     }
-    @RequestMapping(value ="forget",method = {RequestMethod.POST})
+    @RequestMapping(value ="forget")
     @ResponseBody
     public ResponseData forget(String id,String opwd ,String pwd) {
         ResponseData d=new ResponseData();
