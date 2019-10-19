@@ -3,13 +3,13 @@
  */
 package com.thinkgem.jeesite.modules.hotel.entity.hotel;
 
-import org.hibernate.validator.constraints.Length;
-import com.thinkgem.jeesite.modules.sys.entity.Area;
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.sys.entity.Area;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.Date;
 
 /**
  * 酒店管理Entity
@@ -35,7 +35,7 @@ public class Hotel extends DataEntity<Hotel> {
 	private Date startDate;		// 开通时间
 	private String state;		// 开通状态
 	private String eContract;		// 电子合同
-	private Date outTime;		// 访客离开时间
+	private String outTime;		// 访客离开时间
 	private String remind;		// 提前提醒时间
 	private User user;		// 用户
 	private Date beginStartDate;		// 开始 开通时间
@@ -189,12 +189,11 @@ public class Hotel extends DataEntity<Hotel> {
 		this.eContract = eContract;
 	}
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	public Date getOutTime() {
+	public String  getOutTime() {
 		return outTime;
 	}
 
-	public void setOutTime(Date outTime) {
+	public void setOutTime(String outTime) {
 		this.outTime = outTime;
 	}
 	

@@ -53,6 +53,9 @@ LEFT JOIN h_hotel a4 ON a4.id = a.h_id
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.userid = #{user.id}
+			</if>
 			<if test="state != null and state != ''">
 				AND a.state = #{state}
 			</if>

@@ -37,7 +37,7 @@
 		<div class="control-group">
 			<label class="control-label">名称：</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="name" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div    class="control-group" >
@@ -48,13 +48,13 @@
 		<div class="control-group">
 			<label class="control-label">经度：</label>
 			<div class="controls">
-				<form:input path="lat" htmlEscape="false" maxlength="255" class="input-xlarge  " readonly="true"/>
+				<form:input path="lat" htmlEscape="false" maxlength="255" class="input-xlarge  required" readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">纬度：</label>
 			<div class="controls">
-				<form:input path="lng" htmlEscape="false" maxlength="255" class="input-xlarge " readonly="true"/>
+				<form:input path="lng" htmlEscape="false" maxlength="255" class="input-xlarge required" readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -81,19 +81,19 @@
 		<div class="control-group">
 			<label class="control-label">详细地址：</label>
 			<div class="controls">
-				<form:input path="address" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="address" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">账号：</label>
 			<div class="controls">
-				<form:input path="account" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="account" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">密码：</label>
 			<div class="controls">
-				<form:input path="pass" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="pass" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -123,7 +123,7 @@
 		<div class="control-group">
 			<label class="control-label">开通时间：</label>
 			<div class="controls">
-				<input name="startDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+				<input name="startDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required "
 					value="<fmt:formatDate value="${hotel.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
@@ -131,7 +131,7 @@
 		<div class="control-group">
 			<label class="control-label">开通状态：</label>
 			<div class="controls">
-				<form:select path="state" class="input-xlarge ">
+				<form:select path="state" class="input-xlarge required">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
@@ -146,15 +146,15 @@
 		<div class="control-group">
 			<label class="control-label">访客离开时间：</label>
 			<div class="controls">
-				<input name="outTime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${hotel.outTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+				<input name="outTime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
+					value="<fmt:formatDate value="${hotel.outTime}" pattern="HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">提前提醒时间：</label>
 			<div class="controls">
-				<form:input path="remind" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="remind" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -163,13 +163,8 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">用户：</label>
-			<div class="controls">
-				<sys:treeselect id="user" name="user.id" value="${hotel.user.id}" labelName="user.name" labelValue="${hotel.user.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="" allowClear="true" notAllowSelectParent="true"/>
-			</div>
-		</div>
+		<form hidden="user.id"/>
+
 		<div class="form-actions">
 			<shiro:hasPermission name="hotel:hotel:hotel:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

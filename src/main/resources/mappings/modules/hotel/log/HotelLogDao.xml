@@ -49,8 +49,8 @@
 				AND a.d_id = #{d.id}
 			</if>
 			<if test="state != null and state != ''">
-			<![CDATA[ AND a.state <> #{state} ]]>
-			</if>
+				AND a.state = #{state}
+		</if>
 			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
 				AND a.update_by = #{updateBy.id}
 			</if>

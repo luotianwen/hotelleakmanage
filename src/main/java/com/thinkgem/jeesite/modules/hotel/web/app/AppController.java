@@ -1,22 +1,25 @@
 package com.thinkgem.jeesite.modules.hotel.web.app;
 
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
 import com.thinkgem.jeesite.modules.hotel.entity.log.HotelLog;
+import com.thinkgem.jeesite.modules.hotel.entity.staff.HotelStaff;
 import com.thinkgem.jeesite.modules.hotel.service.hotel.HotelService;
 import com.thinkgem.jeesite.modules.hotel.service.log.HotelLogService;
+import com.thinkgem.jeesite.modules.hotel.service.staff.HotelStaffService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,15 +33,18 @@ public class AppController extends BaseController {
     private HotelService hotelService;
     @Autowired
     private HotelLogService hotelLogService;
+    @Autowired
+    private HotelStaffService hotelStaffService;
     @RequestMapping(value ="baojing" )
+
     @ResponseBody
-    public ResponseData baojing(String hid ,int pageNo) {
-        Page page1=new Page<HotelLog>();
+    public ResponseData baojing(String hid ,int pageNo, HttpServletRequest request, HttpServletResponse response) {
+        Page page1=new Page<HotelLog>(request,response);
         ResponseData<Page> d = new ResponseData();
         HotelLog hotelLog=new HotelLog();
         hotelLog.setH(new Hotel(hid));
         hotelLog.setType("1");
-        hotelLog.setState("0");
+
         page1.setPageNo(pageNo);
         page1.setOrderBy("a.start_date desc ");
         Page<HotelLog> page = hotelLogService.findPage(page1, hotelLog);
@@ -50,6 +56,14 @@ public class AppController extends BaseController {
     public ResponseData logupdate(String uid ,String name,String logId,String state) {
         ResponseData d = new ResponseData();
         HotelLog log=hotelLogService.get(logId);
+        int ostate=Integer.parseInt(log.getState());
+        int nstate=Integer.parseInt(state);
+        if(ostate>=nstate){
+            d.setCode("0");
+            d.setMsg("已经被其他人处理了");
+            return d;
+
+        }
         log.setState(state);
         log.setUpdateBy(new User(uid));
         log.setUpdateName(name);
@@ -59,16 +73,32 @@ public class AppController extends BaseController {
 
     @RequestMapping(value ="tishi")
     @ResponseBody
-    public ResponseData tishi(String hid ,int pageNo) {
-        Page page1=new Page<HotelLog>();
+    public ResponseData tishi(String hid , int pageNo, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+        Page page1=new Page<HotelLog>(request, response);
         ResponseData<Page> d = new ResponseData();
         HotelLog hotelLog=new HotelLog();
         hotelLog.setH(new Hotel(hid));
-        hotelLog.setType("1");
-        hotelLog.setState("0");
+        hotelLog.setType("2");
+
         page1.setPageNo(pageNo);
         page1.setOrderBy("a.start_date desc ");
         Page<HotelLog> page = hotelLogService.findPage(page1, hotelLog);
+        Hotel hotel= hotelService.get(hid);
+        String ot=hotel.getOutTime();
+        int remind=Integer.parseInt(hotel.getRemind());
+        List<HotelLog>list=page.getList();
+       /* String dd=DateUtils.formatDate(new Date(),"yyyy-MM-dd ")+" "+ot;
+        Date od=DateUtils.parseDate(dd);*/
+        for (HotelLog log:list){
+             long oh=DateUtils.preHour(log.getOutDate());
+             int ii= new Long(DateUtils.preMinutes(log.getOutDate())).intValue();
+             if(ii<=remind&&ii>0){
+                 log.setRemarks(oh+"-"+ii);
+             }
+             else {
+                 log.setRemarks(oh + "-"+0);
+             }
+        }
         d.setData(page);
         return d;
     }
@@ -94,9 +124,17 @@ public class AppController extends BaseController {
             d.setMsg("密码错误");
             return d;
         }
-        Hotel h=new Hotel();
+        /*Hotel h=new Hotel();
         h.setUser(user);
         List<Hotel> list=hotelService.findList(h);
+        if(list==null||list.size()!=1){
+            d.setCode("0");
+            d.setMsg("没有所属酒店请联系管理员");
+            return d;
+        }*/
+        HotelStaff hs=new HotelStaff();
+        hs.setUser(user);
+        List<HotelStaff> list=hotelStaffService.findList(hs);
         if(list==null||list.size()!=1){
             d.setCode("0");
             d.setMsg("没有所属酒店请联系管理员");
@@ -105,7 +143,7 @@ public class AppController extends BaseController {
         Map map=new HashMap<>();
         map.put("id",user.getId());
         map.put("name",user.getLoginName());
-        map.put("hid",list.get(0).getId());
+        map.put("hid",list.get(0).getH().getId());
         d.setData(map);
         return d;
     }
@@ -118,11 +156,11 @@ public class AppController extends BaseController {
             d.setMsg("用户名或者密码不能为空");
             return d;
         }
-        if (!opwd.equals(pwd)){
+      /*  if (!opwd.equals(pwd)){
             d.setCode("0");
             d.setMsg("两次密码错误");
             return d;
-        }
+        }*/
         User user= systemService.getUser(id);
         if(null==user){
             d.setCode("0");

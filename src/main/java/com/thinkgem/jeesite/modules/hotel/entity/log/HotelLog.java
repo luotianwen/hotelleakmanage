@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.hotel.entity.device.HotelDevice;
 import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
-import org.hibernate.validator.constraints.Length;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 
 import java.util.Date;
 
@@ -33,7 +33,11 @@ public class HotelLog extends DataEntity<HotelLog> {
 	private Date endStartDate;		// 结束 进入时间
 	private Date beginOutDate;		// 开始 离开时间
 	private Date endOutDate;		// 结束 离开时间
-	
+
+	public User getUpdateBy() {
+		return updateBy;
+	}
+
 	public HotelLog() {
 		super();
 	}

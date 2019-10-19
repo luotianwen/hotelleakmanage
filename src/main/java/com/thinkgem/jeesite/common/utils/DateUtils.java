@@ -3,10 +3,10 @@
  */
 package com.thinkgem.jeesite.common.utils;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import java.text.ParseException;
 import java.util.Date;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * 日期工具类, 继承org.apache.commons.lang.time.DateUtils类
@@ -95,7 +95,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	public static String getWeek() {
 		return formatDate(new Date(), "E");
 	}
-	
+	/**
+	 * 日期型字符串转化为日期 格式
+	 * { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm",
+	 *   "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm",
+	 *   "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm" }
+	 */
+	public static Date parseDate(String str) {
+		if (str == null){
+			return null;
+		}
+		try {
+			return parseDate(str, "yyyy-MM-dd HH:mm:ss");
+		} catch (ParseException e) {
+			return null;
+		}
+	}
 	/**
 	 * 日期型字符串转化为日期 格式
 	 * { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", 
@@ -132,7 +147,24 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		long t = new Date().getTime()-date.getTime();
 		return t/(60*60*1000);
 	}
-	
+	/**
+	 * 获取过去的小时
+	 * @param date
+	 * @return
+	 */
+	public static long preHour(Date date) {
+		long t = date.getTime()-new Date().getTime();
+		return t/(60*60*1000);
+	}
+	/**
+	 * 获取过去的分钟
+	 * @param date
+	 * @return
+	 */
+	public static long preMinutes(Date date) {
+		long t = date.getTime()-new Date().getTime();
+		return t/(60*1000);
+	}
 	/**
 	 * 获取过去的分钟
 	 * @param date
