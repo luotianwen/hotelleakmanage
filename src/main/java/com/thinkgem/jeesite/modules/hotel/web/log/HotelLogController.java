@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.hotel.web.log;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.hotel.entity.log.HotelLog;
+import com.thinkgem.jeesite.modules.hotel.service.log.HotelLogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.thinkgem.jeesite.common.config.Global;
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.hotel.entity.log.HotelLog;
-import com.thinkgem.jeesite.modules.hotel.service.log.HotelLogService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 酒店日志Controller
@@ -71,7 +70,17 @@ public class HotelLogController extends BaseController {
 		addMessage(redirectAttributes, "保存酒店日志成功");
 		return "redirect:"+Global.getAdminPath()+"/hotel/log/hotelLog/?repage";
 	}
-	
+	@RequiresPermissions("hotel:log:hotelLog:edit")
+	@RequestMapping(value = "allDeliver")
+	public String allDeliver(String ids,  RedirectAttributes redirectAttributes) throws Exception {
+		String ors[]=ids.split(",");
+		for(String o:ors){
+			hotelLogService.delete(new HotelLog(o));
+		}
+
+		addMessage(redirectAttributes, "保存酒店日志成功");
+		return "redirect:"+Global.getAdminPath()+"/hotel/log/hotelLog/?repage";
+	}
 	@RequiresPermissions("hotel:log:hotelLog:edit")
 	@RequestMapping(value = "delete")
 	public String delete(HotelLog hotelLog, RedirectAttributes redirectAttributes) {

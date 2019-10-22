@@ -6,13 +6,43 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+            $(":checkbox[name='orderIds']").click(function () {
+                $("#checkId").attr('checked', $(":checkbox[name='orderIds']").length == $(":checkbox[name='orderIds']:checked").length);
+            });
+            $(":checkbox[name='checkId']").click(function () {
+                checkAll(this, 'orderIds');
+            });
 		});
+        function checkAll(e, itemName){
+            var flag=e.checked;
+            $(":checkbox[name="+itemName+"]").attr('checked',flag);
+        }
 		function page(n,s){
 			$("#pageNo").val(n);
 			$("#pageSize").val(s);
 			$("#searchForm").submit();
         	return false;
+        }
+        function checkDeliver() {
+            var num = $("input[type='checkbox']:checked").length;
+            if (num == 0) {
+                top.$.jBox.alert("请选择你要批量删除的数据");
+            } else {
+                confirmx('确定要批量删除已选中的数据吗？', allDeliver);
+            }
+
+        }
+
+        function allDeliver() {
+            var ids = [];
+            $("input[name='orderIds']:checked").each(function () {
+                ids.push($(this).val());
+            });
+            var delIds = ids.join(",");
+            var oldAction = $("#searchForm").attr("action");
+            $("#searchForm").attr("action", "${ctx}/hotel/log/hotelLog/allDeliver?ids=" + delIds);
+            $("#searchForm").submit();
+
         }
 	</script>
 </head>
@@ -66,7 +96,8 @@
 			<li><label>房间号：</label>
 				<form:input path="num" htmlEscape="false" maxlength="20" class="input-medium"/>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+				<a href="#" onclick="checkDeliver()" class="btn btn-primary">批量删除</a></li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -74,6 +105,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th><input type=checkbox name="checkId" id="checkId"></th>
 				<th>酒店</th>
 				<th>设备</th>
 				<th>图像</th>
@@ -91,6 +123,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="hotelLog">
 			<tr>
+				<td><input type="checkbox" name="orderIds" value="${hotelLog.id}"/></td>
 				<td><a href="${ctx}/hotel/log/hotelLog/form?id=${hotelLog.id}">
 					${hotelLog.h.name}
 				</a></td>

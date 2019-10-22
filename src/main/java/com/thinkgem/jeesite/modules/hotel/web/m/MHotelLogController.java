@@ -88,7 +88,17 @@ public class MHotelLogController extends BaseController {
 		addMessage(redirectAttributes, "保存酒店日志成功");
 		return "redirect:"+Global.getAdminPath()+"/hotel/m/hotelLog/?repage";
 	}
-	
+	@RequiresPermissions("hotel:m:hotelLog:edit")
+	@RequestMapping(value = "allDeliver")
+	public String allDeliver(String ids,  RedirectAttributes redirectAttributes) throws Exception {
+		String ors[]=ids.split(",");
+		for(String o:ors){
+			hotelLogService.delete(new HotelLog(o));
+		}
+
+		addMessage(redirectAttributes, "保存酒店日志成功");
+		return "redirect:"+Global.getAdminPath()+"/hotel/log/hotelLog/?repage";
+	}
 	@RequiresPermissions("hotel:m:hotelLog:edit")
 	@RequestMapping(value = "delete")
 	public String delete(HotelLog hotelLog, RedirectAttributes redirectAttributes) {

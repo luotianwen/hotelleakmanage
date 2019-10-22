@@ -8,8 +8,10 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
+import com.thinkgem.jeesite.modules.hotel.entity.log.HotelLog;
 import com.thinkgem.jeesite.modules.hotel.entity.visitor.HotelVisitor;
 import com.thinkgem.jeesite.modules.hotel.service.hotel.HotelService;
+import com.thinkgem.jeesite.modules.hotel.service.log.HotelLogService;
 import com.thinkgem.jeesite.modules.hotel.service.visitor.HotelVisitorService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -72,6 +74,8 @@ public class MHotelVisitorController extends BaseController {
 		return "modules/hotel/m/hotelVisitorForm";
 	}
 
+	@Autowired
+	private HotelLogService hotelLogService;
 	@RequiresPermissions("hotel:m:hotelVisitor:edit")
 	@RequestMapping(value = "save")
 	public String save(HotelVisitor hotelVisitor, Model model, RedirectAttributes redirectAttributes) throws Exception {
@@ -86,6 +90,15 @@ public class MHotelVisitorController extends BaseController {
 		}
 		hotelVisitor.setH(list.get(0));
 		hotelVisitorService.save(hotelVisitor);
+		HotelLog hl = new HotelLog();
+		hl.setType("2");
+		hl.setState("0");
+		hl.setH(h);
+		hl.setStartDate(hotelVisitor.getStartDate());
+		hl.setOutDate(hotelVisitor.getEndOutDate());
+		hl.setNum(hotelVisitor.getNum());
+		hl.setPto(hotelVisitor.getPhos());
+		hotelLogService.save(hl);
 		addMessage(redirectAttributes, "保存访客管理成功");
 		return "redirect:"+Global.getAdminPath()+"/hotel/m/hotelVisitor/?repage";
 	}

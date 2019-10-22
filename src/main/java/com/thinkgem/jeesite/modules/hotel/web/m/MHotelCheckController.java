@@ -9,8 +9,10 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hotel.entity.check.HotelCheck;
 import com.thinkgem.jeesite.modules.hotel.entity.hotel.Hotel;
+import com.thinkgem.jeesite.modules.hotel.entity.log.HotelLog;
 import com.thinkgem.jeesite.modules.hotel.service.check.HotelCheckService;
 import com.thinkgem.jeesite.modules.hotel.service.hotel.HotelService;
+import com.thinkgem.jeesite.modules.hotel.service.log.HotelLogService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +74,8 @@ public class MHotelCheckController extends BaseController {
 		return "modules/hotel/m/hotelCheckForm";
 	}
 
+	@Autowired
+	private HotelLogService hotelLogService;
 	@RequiresPermissions("hotel:m:hotelCheck:edit")
 	@RequestMapping(value = "save")
 	public String save(HotelCheck hotelCheck, Model model, RedirectAttributes redirectAttributes) throws Exception {
@@ -86,6 +90,19 @@ public class MHotelCheckController extends BaseController {
 		}
 		hotelCheck.setH(list.get(0));
 		hotelCheckService.save(hotelCheck);
+
+
+		HotelLog hl = new HotelLog();
+		hl.setType("2");
+		hl.setState("0");
+		hl.setH(h);
+		hl.setStartDate(hotelCheck.getStartDate());
+		hl.setOutDate(hotelCheck.getEndOutDate());
+		hl.setNum(hotelCheck.getNum());
+		hl.setPto(hotelCheck.getPhos());
+		hotelLogService.save(hl);
+
+
 		addMessage(redirectAttributes, "保存入住管理成功");
 		return "redirect:"+Global.getAdminPath()+"/hotel/m/hotelCheck/?repage";
 	}

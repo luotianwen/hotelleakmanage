@@ -97,10 +97,12 @@ public class FaceUtils {
                                     hl.setD(hd1);
                                     hl.setH(hd1.getH());
                                     hl.setContent("误闯人员");
-
+                                    hl.setState("0");
+                                    hl.setType("1");
                                     hl.setStartDate(new Date());
                                     hl.preInsert();
                                     logDao.insert(hl);
+                                    PushUtils.push();
                                 }
                             } catch (Exception ex) {
                                 // System.out.println("处理抓拍到的人脸数据时发生异常：" + ex);
